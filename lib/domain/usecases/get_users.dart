@@ -9,7 +9,7 @@ class GetUsers {
 
   GetUsers(this.repository);
 
-  Future<Either<Failure, List<User>>> call() {
+  Future<Either<Failure, List<UserEntity>>> call() {
     return repository.getUsers();
   }
 }

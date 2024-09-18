@@ -4,8 +4,10 @@ import 'package:dartz/dartz.dart';
 import '../../data/failure.dart';
 
 abstract class UserRepository {
-  Future<Either<Failure, List<User>>> getUsers();
-  Future<void> createUser(User user);
-  Future<void> updateUser(User user);
-  Future<void> deleteUser(String id);
+  Future<Either<Failure, List<UserEntity>>> getUsers();
+  Future<Either<Failure, void>> createUser(UserEntity user);
+  Future<Either<Failure, void>> updateUser(UserEntity user);
+  Future<Either<Failure, void>> deleteUser(String id);
+  Future<Either<Failure, void>> forgotPassword(String email);
+  Future<Either<Failure, void>> signIn(String email, String password);
 }

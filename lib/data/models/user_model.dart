@@ -1,7 +1,7 @@
 import 'package:astronacci_test_app/domain/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel extends User {
+class UserModel extends UserEntity {
   const UserModel({super.id, super.name, super.email, super.password, super.image});
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
@@ -23,7 +23,7 @@ class UserModel extends User {
     };
   }
 
-  User toEntity() => User(
+  UserEntity toEntity() => UserEntity(
         email: email,
         id: id,
         image: image,
@@ -31,7 +31,7 @@ class UserModel extends User {
         password: password,
       );
 
-  static UserModel fromEntity(User user) {
+  static UserModel fromEntity(UserEntity user) {
     return UserModel(
       email: user.email,
       id: user.id,
