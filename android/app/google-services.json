@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567859055903",
+    "project_id": "test-project-bca82",
+    "storage_bucket": "test-project-bca82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567859055903:android:23a4674bbff2cee1d8742a",
+        "android_client_info": {
+          "package_name": "com.example.astronacci_test_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN3GN-4ZeSf6BfPhRSak-P3q8yJMdPrzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
