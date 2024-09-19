@@ -11,8 +11,11 @@ class LocalServices {
 
   Future<void> saveUserResponseModel(UserModel userModel) async {
     final jsonUserModel = userModel.toJson();
-    await _secureStorage.write(key: KeyStorage.user.toString(), value: jsonEncode(jsonUserModel)).then((value) async {
+    await _secureStorage
+        .write(key: KeyStorage.user.toString(), value: jsonEncode(jsonUserModel))
+        .then((value) async {
       printConsole('success saved user');
+      // printConsole(jsonUserModel);
     });
   }
 

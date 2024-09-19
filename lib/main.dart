@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (context) => di.locator<AuthBloc>()..add(AuthCheckStatus())),
+        BlocProvider<AuthBloc>(
+            create: (context) => di.locator<AuthBloc>()..add(AuthCheckStatusEvent())),
         BlocProvider<UserBloc>(create: (context) => di.locator<UserBloc>()),
       ],
       child: MaterialApp.router(

@@ -4,9 +4,6 @@ import 'dart:io';
 
 import 'package:astronacci_test_app/domain/entities/user.dart';
 import 'package:astronacci_test_app/tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,11 +175,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       listener: (context, state) {
                         if (state is AuthSuccessRegister) {
                           Navigator.of(context).pop();
-                          GlobalSnackBar.showSnackBar('Success', 'Success created account', Duration(seconds: 2));
+                          GlobalSnackBar.showSnackBar(
+                              'Success', 'Success created account', Duration(seconds: 2));
                         }
 
                         if (state is AuthFailure) {
-                          GlobalSnackBar.showSnackBar('Failed', state.message, Duration(seconds: 2));
+                          GlobalSnackBar.showSnackBar(
+                              'Failed', state.message, Duration(seconds: 2));
                         }
                       },
                       builder: (context, state) {
@@ -191,17 +190,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: CircularProgressIndicator(),
                           );
                         }
-
                         return CustomFilledButton.text(
                             text: 'REGISTER',
-                            textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                            textStyle: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                             color: Colors.blue,
                             onPressed: () {
-                              context.read<AuthBloc>().add(SignUpEvent(UserEntity(
-                                  email: emailController.text,
-                                  name: nameController.text,
-                                  password: hashPassword(passwordController.text),
-                                  image: image!.path)));
+                              context.read<AuthBloc>().add(SignUpEvent(
+                                  UserEntity(
+                                      email: emailController.text,
+                                      name: nameController.text,
+                                      image: image!.path),
+                                  passwordController.text));
                             });
                       },
                     ),

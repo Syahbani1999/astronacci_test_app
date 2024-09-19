@@ -25,8 +25,9 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         // TODO: implement listener
         if (state is AuthSuccess) {
-          goRouter.pushReplacementNamed(Routes.homepageRoute);
-          GlobalSnackBar.showSnackBar('Success', 'Welcome ${state.user.name}', Duration(seconds: 2));
+          goRouter.pushReplacementNamed(Routes.homepageRoute, extra: state.user);
+          GlobalSnackBar.showSnackBar(
+              'Success', 'Welcome ${state.user.name}', Duration(seconds: 2));
         }
         if (state is AuthFailure) {
           GlobalSnackBar.showSnackBar('Failed', state.message, Duration(seconds: 2));
@@ -56,8 +57,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // SizedBox(height: 120),
-                      // NOTE: EMAIL INPUT
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .1,
+                      ),
                       TextField(
                         controller: usernameController,
                         decoration: InputDecoration(
@@ -69,7 +71,6 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                      // NOTE: PASSWORD INPUT
                       TextField(
                         controller: passwordController,
                         obscureText: true,
@@ -79,18 +80,31 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: const BorderSide(color: Colors.blue))),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                goRouter.pushNamed(Routes.forgotPasswordRoute);
+                              },
+                              child: const Text(
+                                'Forgot Password ?',
+                                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                              )),
+                        ],
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
-
                       CustomFilledButton.text(
                         color: Colors.blue,
                         text: 'Sign In',
-                        textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        textStyle:
+                            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         borderRadius: 12,
                         onPressed: () {
                           context.read<AuthBloc>().add(
-                                SignInEvent(usernameController.text, hashPassword(passwordController.text)),
+                                SignInEvent(usernameController.text, passwordController.text),
                               );
                         },
                       ),

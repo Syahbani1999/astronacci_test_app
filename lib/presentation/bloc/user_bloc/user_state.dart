@@ -19,6 +19,14 @@ final class UserUpdated extends UserState {}
 
 final class UserDeleted extends UserState {}
 
+final class UserDataUpdated extends UserState {
+  final UserEntity data;
+  const UserDataUpdated(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}
+
 final class UserError extends UserState {
   final String message;
   const UserError(this.message);

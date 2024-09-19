@@ -7,8 +7,10 @@ import 'package:astronacci_test_app/domain/usecases/forgot_password.dart';
 import 'package:astronacci_test_app/domain/usecases/get_users.dart';
 import 'package:astronacci_test_app/domain/usecases/search_user.dart';
 import 'package:astronacci_test_app/domain/usecases/signin_user.dart';
+import 'package:astronacci_test_app/domain/usecases/signout_user.dart';
 import 'package:astronacci_test_app/domain/usecases/signup_user.dart';
 import 'package:astronacci_test_app/domain/usecases/update_user.dart';
+import 'package:astronacci_test_app/domain/usecases/update_user_data.dart';
 import 'package:astronacci_test_app/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:astronacci_test_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,8 +28,10 @@ void init() {
         getUsersCase: locator(),
         updateUserCase: locator(),
         searchUsersCase: locator(),
+        updateUserDataCase: locator(),
       ));
-  locator.registerFactory(() => AuthBloc(signUpCase: locator(), forgotPassword: locator(), signIn: locator()));
+  locator.registerFactory(() => AuthBloc(
+      signUpCase: locator(), forgotPassword: locator(), signIn: locator(), signOutCase: locator()));
 
   // usecase
   locator.registerLazySingleton(() => GetUsersCase(locator()));
@@ -38,9 +42,12 @@ void init() {
   locator.registerLazySingleton(() => SignUpCase(locator()));
   locator.registerLazySingleton(() => ForgotPasswordCase(locator()));
   locator.registerLazySingleton(() => SearchUsers(locator()));
+  locator.registerLazySingleton(() => SignOutCase(locator()));
+  locator.registerLazySingleton(() => UpdateUserDataCase(locator()));
 
   //repo
-  locator.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(remoteAuthSource: locator()));
+  locator
+      .registerLazySingleton<UserRepository>(() => UserRepositoryImpl(remoteAuthSource: locator()));
 
   // data source
   locator.registerLazySingleton<RemoteAuthSource>(() => RemoteAuthSourceImpl(

@@ -21,6 +21,8 @@ final class AuthFailure extends AuthState {
 
 final class AuthSuccessRegister extends AuthState {}
 
+final class AuthLoggedOut extends AuthState {}
+
 final class AuthSuccess extends AuthState {
   final UserEntity user;
   const AuthSuccess(this.user);
@@ -30,3 +32,12 @@ final class AuthSuccess extends AuthState {
 }
 
 final class PasswordResetSentEmailSuccess extends AuthState {}
+
+class AuthAuthenticated extends AuthState {
+  final UserEntity user;
+
+  const AuthAuthenticated(this.user);
+
+  @override
+  List<Object?> get props => [user];
+}

@@ -7,7 +7,20 @@ abstract class UserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class UsersLoadEvent extends UserEvent {}
+class UsersLoadEvent extends UserEvent {
+  final int page;
+  final int pageSize;
+  const UsersLoadEvent({required this.page, required this.pageSize});
+}
+
+class UserLoadEvent extends UserEvent {
+  final String idUser;
+
+  const UserLoadEvent(this.idUser);
+
+  @override
+  List<Object?> get props => [idUser];
+}
 
 class UserAddEvent extends UserEvent {
   final UserEntity user;

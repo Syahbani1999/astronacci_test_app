@@ -9,7 +9,7 @@ class GetUsersCase {
 
   GetUsersCase(this.repository);
 
-  Future<Either<Failure, List<UserEntity>>> call() {
-    return repository.getUsers();
+  Future<Either<Failure, List<UserEntity>>> call(int page, int pageSize) {
+    return repository.getUsers(page, pageSize);
   }
 }

@@ -6,13 +6,11 @@ class UserEntity extends Equatable {
     this.id,
     this.image,
     this.name,
-    this.password,
   });
 
   final String? id;
   final String? name;
   final String? email;
-  final String? password;
   final String? image;
 
   @override
@@ -21,7 +19,6 @@ class UserEntity extends Equatable {
         id,
         name,
         email,
-        password,
         image,
       ];
 }

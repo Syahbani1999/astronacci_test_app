@@ -9,16 +9,16 @@ void printConsole(dynamic text) {
   }
 }
 
-String hashPassword(String password) {
-  // Convert the password to bytes
-  var bytes = utf8.encode(password);
+// String hashPassword(String password) {
+//   // Convert the password to bytes
+//   var bytes = utf8.encode(password);
 
-  // Hash the bytes using SHA-256
-  var digest = sha256.convert(bytes);
+//   // Hash the bytes using SHA-256
+//   var digest = sha256.convert(bytes);
 
-  // Return the hashed password as a string
-  return digest.toString();
-}
+//   // Return the hashed password as a string
+//   return digest.toString();
+// }
 
 String getInitials(String value) =>
     value.isNotEmpty ? value.trim().split(RegExp(' +')).map((s) => s[0]).take(2).join() : '';
@@ -48,7 +48,8 @@ class GlobalSnackBar {
 
   GlobalSnackBar._internal();
 
-  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   static void showSnackBar(String title, String subtitle, Duration duration) {
     final snackBar = SnackBar(

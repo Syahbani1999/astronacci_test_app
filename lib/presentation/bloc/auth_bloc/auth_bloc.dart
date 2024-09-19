@@ -2,7 +2,9 @@ import 'package:astronacci_test_app/data/models/user_model.dart';
 import 'package:astronacci_test_app/domain/entities/user.dart';
 import 'package:astronacci_test_app/domain/usecases/signin_user.dart';
 import 'package:astronacci_test_app/domain/usecases/forgot_password.dart';
+import 'package:astronacci_test_app/domain/usecases/signout_user.dart';
 import 'package:astronacci_test_app/domain/usecases/signup_user.dart';
+import 'package:astronacci_test_app/tools.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -16,9 +18,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ForgotPasswordCase forgotPassword;
   final SignInCase signIn;
   final localServices = LocalServices();
-  AuthBloc({required this.signUpCase, required this.forgotPassword, required this.signIn}) : super(AuthInitial()) {
-    // register
-    on<AuthCheckStatus>((event, emit) async {
+  final SignOutCase signOutCase;
+  AuthBloc(
+      {required this.signUpCase,
+      required this.forgotPassword,
+      required this.signIn,
+      required this.signOutCase})
+      : super(AuthInitial()) {
+    on<AuthCheckStatusEvent>((event, emit) async {
       try {
         await Future.delayed(const Duration(seconds: 2));
         emit(AuthLoading());
@@ -37,12 +44,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // logged out
+    on<AuthLogoutEvent>((event, emit) async {
+      try {
+        emit(AuthLoading());
+        final result = await signOutCase.call();
+        result.fold((failure) => emit(AuthFailure(failure.message)), (_) async {
+          emit(AuthLoggedOut());
+          await localServices.deleteAllData();
+        });
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
+    // register
     on<SignUpEvent>((event, emit) async {
       try {
         emit(AuthLoading());
-        final result = await signUpCase.call(event.user);
+        final result = await signUpCase.call(event.user, event.password);
 
-        result.fold((failure) => emit(AuthFailure(failure.message)), (data) => emit(AuthSuccessRegister()));
+        result.fold(
+            (failure) => emit(AuthFailure(failure.message)), (data) => emit(AuthSuccessRegister()));
       } catch (e) {
         emit(AuthFailure(e.toString()));
       }
@@ -57,6 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         result.fold(
           (failure) => emit(AuthFailure(failure.message)),
           (data) {
+            // printConsole('DATA : ${UserModel.fromEntity(data).toJson()}');
             localServices.saveToken(data.id ?? '');
             localServices.saveUserResponseModel(UserModel.fromEntity(data));
             emit(AuthSuccess(data));

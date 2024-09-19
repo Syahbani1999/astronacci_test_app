@@ -17,12 +17,20 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.remoteAuthSource});
 
   @override
-  Future<Either<Failure, List<UserEntity>>> getUsers() async {
+  Future<Either<Failure, List<UserEntity>>> getUsers(int page, int pageSize) async {
     // TODO: implement getCurrentWeather
     try {
       final result = await remoteAuthSource.getUsers();
+      // Calculate start and end index for pagination
+      final startIndex = (page - 1) * pageSize;
+      final endIndex = startIndex + pageSize;
 
-      return Right(result);
+      // Paginate the products
+      final paginatedProducts = result.sublist(
+        startIndex,
+        endIndex > result.length ? result.length : endIndex,
+      );
+      return Right(paginatedProducts);
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -31,9 +39,9 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signUp(UserEntity user) async {
+  Future<Either<Failure, void>> signUp(UserEntity user, String password) async {
     try {
-      await remoteAuthSource.signUp(UserModel.fromEntity(user));
+      await remoteAuthSource.signUp(UserModel.fromEntity(user), password);
       return const Right(null);
     } catch (error) {
       return Left(ServerFailure('Failed to add user $error'));
@@ -116,6 +124,31 @@ class UserRepositoryImpl implements UserRepository {
       return Right(filteredUsers);
     } catch (e) {
       return Left(ServerFailure('Failed'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> loggedOut() async {
+    // TODO: implement signIn
+    try {
+      await remoteAuthSource.loggedOut();
+      return Right(null);
+    } catch (e) {
+      return Left(ServerFailure('Failed'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateUserData(String idUser) async {
+    // TODO: implement getCurrentWeather
+    try {
+      final result = await remoteAuthSource.updateUserData(idUser);
+
+      return Right(result.toEntity());
+    } on ServerException {
+      return const Left(ServerFailure(''));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
     }
   }
 }

@@ -18,10 +18,11 @@ class SignInEvent extends AuthEvent {
 
 class SignUpEvent extends AuthEvent {
   final UserEntity user;
-  const SignUpEvent(this.user);
+  final String password;
+  const SignUpEvent(this.user, this.password);
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user, password];
 }
 
 class ForgotPasswordEvent extends AuthEvent {
@@ -32,4 +33,6 @@ class ForgotPasswordEvent extends AuthEvent {
   List<Object?> get props => [email];
 }
 
-class AuthCheckStatus extends AuthEvent {}
+class AuthCheckStatusEvent extends AuthEvent {}
+
+class AuthLogoutEvent extends AuthEvent {}

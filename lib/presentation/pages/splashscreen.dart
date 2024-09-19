@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         listener: (context, state) {
           // TODO: implement listener
           if (state is AuthSuccess) {
-            context.pushReplacementNamed(Routes.homepageRoute);
+            context.pushReplacementNamed(Routes.homepageRoute, extra: state.user);
           } else {
             context.pushReplacementNamed(Routes.loginRoute);
           }
@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               children: [
                 Center(
                   child: Text(
-                    'BLoC Pattern',
+                    'Astronacci Test',
                     style: TextStyle(color: Colors.black),
                   ),
                 )
