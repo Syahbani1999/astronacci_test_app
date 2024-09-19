@@ -4,12 +4,12 @@ import 'package:dartz/dartz.dart';
 import '../../data/failure.dart';
 import '../repositories/user_repository.dart';
 
-class UpdateUserCase {
+class SignUpCase {
   final UserRepository repository;
 
-  UpdateUserCase(this.repository);
+  SignUpCase(this.repository);
 
   Future<Either<Failure, void>> call(UserEntity user) async {
-    return await repository.updateUser(user);
+    return await repository.signUp(user);
   }
 }

@@ -1,12 +1,15 @@
-import '../entities/user.dart';
+import 'package:astronacci_test_app/domain/entities/user.dart';
+import 'package:dartz/dartz.dart';
+
+import '../../data/failure.dart';
 import '../repositories/user_repository.dart';
 
-class CreateUser {
+class CreateUserCase {
   final UserRepository repository;
 
-  CreateUser(this.repository);
+  CreateUserCase(this.repository);
 
-  Future<void> call(UserEntity user) async {
-    await repository.createUser(user);
+  Future<Either<Failure, void>> call(UserEntity user) async {
+    return await repository.createUser(user);
   }
 }

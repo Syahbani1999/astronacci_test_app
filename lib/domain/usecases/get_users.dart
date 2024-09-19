@@ -4,10 +4,10 @@ import 'package:dartz/dartz.dart';
 import '../../data/failure.dart';
 import '../repositories/user_repository.dart';
 
-class GetUsers {
+class GetUsersCase {
   final UserRepository repository;
 
-  GetUsers(this.repository);
+  GetUsersCase(this.repository);
 
   Future<Either<Failure, List<UserEntity>>> call() {
     return repository.getUsers();

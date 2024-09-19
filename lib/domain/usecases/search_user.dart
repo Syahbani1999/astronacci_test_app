@@ -4,12 +4,12 @@ import 'package:dartz/dartz.dart';
 import '../../data/failure.dart';
 import '../repositories/user_repository.dart';
 
-class UpdateUserCase {
+class SearchUsers {
   final UserRepository repository;
 
-  UpdateUserCase(this.repository);
+  SearchUsers(this.repository);
 
-  Future<Either<Failure, void>> call(UserEntity user) async {
-    return await repository.updateUser(user);
+  Future<Either<Failure, List<UserEntity>>> call(String query) async {
+    return repository.searchUsers(query);
   }
 }

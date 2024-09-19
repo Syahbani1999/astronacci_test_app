@@ -1,11 +1,14 @@
+import 'package:dartz/dartz.dart';
+
+import '../../data/failure.dart';
 import '../repositories/user_repository.dart';
 
-class DeleteUser {
+class DeleteUserCase {
   final UserRepository repository;
 
-  DeleteUser(this.repository);
+  DeleteUserCase(this.repository);
 
-  Future<void> call(String id) async {
-    await repository.deleteUser(id);
+  Future<Either<Failure, void>> call(String id) async {
+    return await repository.deleteUser(id);
   }
 }

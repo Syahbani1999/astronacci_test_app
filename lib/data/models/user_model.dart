@@ -14,13 +14,23 @@ class UserModel extends UserEntity {
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'email': email,
       'password': password,
       'image': image,
     };
+  }
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      password: json['password'],
+      image: json['image'],
+    );
   }
 
   UserEntity toEntity() => UserEntity(

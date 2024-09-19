@@ -1,6 +1,9 @@
+import 'package:astronacci_test_app/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../routes/router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,25 +28,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     ).animate(animationController);
 
     animationController.forward();
-    await Future.delayed(Duration(seconds: 2));
     animation.addStatusListener((status) async {
-      if (status == AnimationStatus.completed) {
-        // return Future.delayed(Duration(seconds: 2))
-        //     .then((value) => context.goNamed(Routes.splashscreenRoute));
-        // if (checkUpdate.value) {
-        //   return;
-        // } else if (isFirstTime) {
-        //   var duration = const Duration(seconds: 2);
-        //   return Future.delayed(duration).then((value) => Get.offNamed(Routes.ONBOARD));
-        // } else if (token) {
-        //   authController.getUser();
-        //   var duration = const Duration(seconds: 2);
-        //   return Future.delayed(duration).then((value) => Get.offNamed(Routes.TABBAR));
-        // } else {
-        //   var duration = const Duration(seconds: 2);
-        //   return Future.delayed(duration).then((value) => Get.offNamed(Routes.LOGIN));
-        // }
-      }
+      if (status == AnimationStatus.completed) {}
     });
   }
 
@@ -65,19 +51,29 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FadeTransition(
-        opacity: animation,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  'BLoC Pattern',
-                  style: TextStyle(color: Colors.black),
-                ),
-              )
-            ],
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state is AuthSuccess) {
+            context.pushReplacementNamed(Routes.homepageRoute);
+          } else {
+            context.pushReplacementNamed(Routes.loginRoute);
+          }
+        },
+        child: FadeTransition(
+          opacity: animation,
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    'BLoC Pattern',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

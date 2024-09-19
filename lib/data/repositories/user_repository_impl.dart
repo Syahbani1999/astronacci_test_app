@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:astronacci_test_app/data/datasources/remote_auth_source.dart';
@@ -29,9 +31,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> createUser(UserEntity user) async {
+  Future<Either<Failure, void>> signUp(UserEntity user) async {
     try {
       await remoteAuthSource.signUp(UserModel.fromEntity(user));
+      return const Right(null);
+    } catch (error) {
+      return Left(ServerFailure('Failed to add user $error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> createUser(UserEntity user) async {
+    try {
+      await remoteAuthSource.createUser(UserModel.fromEntity(user));
       return const Right(null);
     } catch (error) {
       return Left(ServerFailure('Failed to add user $error'));
@@ -74,11 +86,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signIn(String email, String password) async {
+  Future<Either<Failure, UserModel>> signIn(String email, String password) async {
     // TODO: implement signIn
     try {
-      await remoteAuthSource.signIn(email, password);
-      return const Right(null);
+      final result = await remoteAuthSource.signIn(email, password);
+
+      return Right(result);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception("No user found with this email.");
@@ -87,6 +100,22 @@ class UserRepositoryImpl implements UserRepository {
       } else {
         throw Exception(e.message ?? "Login failed.");
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserModel>>> searchUsers(String query) async {
+    try {
+      final users = await remoteAuthSource.getUsers();
+      final filteredUsers = users.where((user) {
+        final nameLower = user.name!.toLowerCase();
+
+        final searchLower = query.toLowerCase();
+        return nameLower.contains(searchLower);
+      }).toList();
+      return Right(filteredUsers);
+    } catch (e) {
+      return Left(ServerFailure('Failed'));
     }
   }
 }
